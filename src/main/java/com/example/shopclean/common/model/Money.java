@@ -1,4 +1,4 @@
-package com.example.shopclean.order.domain;
+package com.example.shopclean.common.model;
 
 public class Money {
     private int value;

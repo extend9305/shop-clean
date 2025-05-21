@@ -1,7 +1,10 @@
 package com.example.shopclean.order.adapter.out.persistence;
 
+import com.example.shopclean.common.jpa.MoneyConverter;
+import com.example.shopclean.common.model.Money;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,7 +45,8 @@ public class OrderJpaEntity {
     private List<OrderLineJpaEntity> orderLines;
 
     @Column(name = "total_amounts")
-    private int totalAmounts;
+    @Convert(converter = MoneyConverter.class)
+    private Money totalAmounts;
 
     @Column(name = "shipping_zip_code")
     private String shippingZipCode;

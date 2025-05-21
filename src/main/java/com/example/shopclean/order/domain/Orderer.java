@@ -1,8 +1,10 @@
 package com.example.shopclean.order.domain;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 @Embeddable
+@Getter
 public class Orderer {
     private String memberId;
     private String name;

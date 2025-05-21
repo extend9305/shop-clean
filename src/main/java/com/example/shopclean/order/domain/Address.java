@@ -1,5 +1,8 @@
 package com.example.shopclean.order.domain;
 
+import lombok.Getter;
+
+@Getter
 public class Address {
     private String zipCode;
 

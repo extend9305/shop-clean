@@ -1,7 +1,9 @@
 package com.example.shopclean.order.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderNo implements Serializable {
     private String number;
@@ -19,7 +21,7 @@ public class OrderNo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderNo orderNo = (OrderNo) o;
-        return Objects.equals(orderNo, orderNo.number);
+        return Objects.equals(number, orderNo.number);
     }
 
     @Override
@@ -30,4 +32,11 @@ public class OrderNo implements Serializable {
     public static OrderNo of(String number) {
         return new OrderNo(number);
     }
+
+    public static OrderNo nextOrderNo() {
+        int randomNo = ThreadLocalRandom.current().nextInt(900000) + 100000;
+        String number = String.format("%tY%<tm%<td%<tH-%d", new Date(), randomNo);
+        return new OrderNo(number);
+    }
+
 }

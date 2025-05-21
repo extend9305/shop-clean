@@ -1,5 +1,6 @@
 package com.example.shopclean.order.domain;
 
+import com.example.shopclean.common.model.Money;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Getter;
@@ -35,18 +36,24 @@ public class Order {
 
     protected Order() {}
 
-    private Order(OrderNo orderNo, long version, Orderer orderer, ShippingInfo shippingInfo, OrderState state, Money totalAmounts, List<OrderLine> orderLines, LocalDateTime orderDate) {
+    private Order(OrderNo orderNo, Orderer orderer, ShippingInfo shippingInfo, OrderState state, List<OrderLine> orderLines) {
         this.orderNo = orderNo;
-        this.version = version;
         this.orderer = orderer;
         this.shippingInfo = shippingInfo;
         this.state = state;
-        this.totalAmounts = totalAmounts;
         this.orderLines = orderLines;
-        this.orderDate = orderDate;
+        calculateTotalAmounts();
     }
 
-    public static Order withId(OrderNo orderNo, long version, Orderer orderer, ShippingInfo shippingInfo, OrderState state, Money totalAmounts, List<OrderLine> orderLines, LocalDateTime orderDate) {
-        return new Order(orderNo,version,orderer,shippingInfo,state,totalAmounts,orderLines,orderDate);
+    public static Order withId(OrderNo orderNo, Orderer orderer, ShippingInfo shippingInfo, OrderState state,  List<OrderLine> orderLines) {
+        return new Order(orderNo,orderer,shippingInfo,state,orderLines);
+    }
+    public static Order withoutId(Orderer orderer, ShippingInfo shippingInfo, OrderState state,  List<OrderLine> orderLines) {
+        return new Order(OrderNo.nextOrderNo(),orderer,shippingInfo,state,orderLines);
+    }
+
+    private void calculateTotalAmounts(){
+        this.totalAmounts = new Money(orderLines.stream()
+                .mapToInt(order -> order.getAmount().getValue()).sum());
     }
 }

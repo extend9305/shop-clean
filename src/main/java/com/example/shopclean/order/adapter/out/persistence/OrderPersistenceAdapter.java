@@ -1,6 +1,7 @@
 package com.example.shopclean.order.adapter.out.persistence;
 
 import com.example.shopclean.order.application.port.out.LoadOrderPort;
+import com.example.shopclean.order.application.port.out.PlaceOrderPort;
 import com.example.shopclean.order.domain.Order;
 import com.example.shopclean.order.domain.OrderNo;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +12,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class OrderPersistenceAdapter implements LoadOrderPort {
+public class OrderPersistenceAdapter implements LoadOrderPort, PlaceOrderPort {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
 
@@ -24,5 +24,12 @@ public class OrderPersistenceAdapter implements LoadOrderPort {
         }else{
             return null;
         }
+    }
+
+    @Override
+    public OrderNo placeOrder(Order order) {
+        OrderJpaEntity orderJpaEntity = orderMapper.mapToJpaEntity(order);
+        OrderJpaEntity saveOrder = orderRepository.save(orderJpaEntity);
+        return new OrderNo(saveOrder.getNumber());
     }
 }
