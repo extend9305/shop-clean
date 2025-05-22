@@ -1,6 +1,6 @@
-package com.example.shopclean.order.adapter.out.persistence;
+package com.example.shopclean.common.jpa;
 
-import com.example.shopclean.order.domain.Money;
+import com.example.shopclean.common.model.Money;
 import jakarta.persistence.AttributeConverter;
 
 public class MoneyConverter implements AttributeConverter<Money, Integer> {

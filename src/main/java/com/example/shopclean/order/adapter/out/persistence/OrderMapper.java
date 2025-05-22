@@ -1,7 +1,6 @@
 package com.example.shopclean.order.adapter.out.persistence;
 
 import com.example.shopclean.order.domain.Address;
-import com.example.shopclean.order.domain.Money;
 import com.example.shopclean.order.domain.Order;
 import com.example.shopclean.order.domain.OrderLine;
 import com.example.shopclean.order.domain.OrderNo;
@@ -19,18 +18,42 @@ public class OrderMapper {
         return Order.withId(
                 new OrderNo(order.getNumber()),
                 order.getVersion(),
-                new Orderer(order.getOrdererId(), order.getOrdererName()),
+                Orderer.of(order.getOrdererId(), order.getOrdererName()),
                 new ShippingInfo(
                         new Address(order.getShippingZipCode(),order.getShippingAddress1(),order.getShippingAddress2()),
                         order.getShippingMessage(),
                         new Receiver(order.getReceiverName(),order.getReceiverPhone())
                 ),
                 OrderState.valueOf(order.getState()),
-                new Money(order.getTotalAmounts()),
                 order.getOrderLines().stream()
-                        .map(o -> new OrderLine(o.getProductId()))
-                        .collect(Collectors.toList()),
-                order.getOrderDate()
+                        .map(o -> OrderLine.withId(o.getProductId(),o.getPrice(),o.getQuantity()))
+                        .collect(Collectors.toList())
             );
+    }
+
+    OrderJpaEntity mapToJpaEntity(Order order){
+        return new OrderJpaEntity(
+                    order.getOrderNo().getNumber(),
+                    order.getVersion(),
+                    order.getOrderer().getMemberId(),
+                    order.getOrderer().getName(),
+                    order.getOrderLines().stream()
+                            .map(product -> new OrderLineJpaEntity(
+                                    product.getProductId(),
+                                    product.getPrice(),
+                                    product.getQuantity(),
+                                    product.getAmount())
+                            )
+                            .collect(Collectors.toList()),
+                    order.getTotalAmounts(),
+                    order.getShippingInfo().getAddress().getZipCode(),
+                    order.getShippingInfo().getAddress().getAddress1(),
+                    order.getShippingInfo().getAddress().getAddress2(),
+                    order.getShippingInfo().getMessage(),
+                    order.getShippingInfo().getReceiver().getName(),
+                    order.getShippingInfo().getReceiver().getPhone(),
+                    order.getState().name(),
+                    order.getOrderDate()
+                );
     }
 }
