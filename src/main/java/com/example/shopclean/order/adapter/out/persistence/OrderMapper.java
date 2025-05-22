@@ -17,7 +17,8 @@ public class OrderMapper {
     Order mapToDomainEntity (OrderJpaEntity order){
         return Order.withId(
                 new OrderNo(order.getNumber()),
-                new Orderer(order.getOrdererId(), order.getOrdererName()),
+                order.getVersion(),
+                Orderer.of(order.getOrdererId(), order.getOrdererName()),
                 new ShippingInfo(
                         new Address(order.getShippingZipCode(),order.getShippingAddress1(),order.getShippingAddress2()),
                         order.getShippingMessage(),
@@ -25,7 +26,7 @@ public class OrderMapper {
                 ),
                 OrderState.valueOf(order.getState()),
                 order.getOrderLines().stream()
-                        .map(o -> new OrderLine(o.getProductId(),o.getPrice(),o.getQuantity()))
+                        .map(o -> OrderLine.withId(o.getProductId(),o.getPrice(),o.getQuantity()))
                         .collect(Collectors.toList())
             );
     }

@@ -16,7 +16,7 @@ public class OrderLine {
 
     private Money amount;
 
-    public OrderLine(String productId, Money price, int quantity) {
+    private OrderLine(String productId, Money price, int quantity) {
         this.productId = productId;
         this.price = price;
         this.quantity = quantity;
@@ -27,4 +27,7 @@ public class OrderLine {
         return price.multiply(quantity);
     }
 
+    public static OrderLine withId(String productId, Money price, int quantity) {
+        return new OrderLine(productId, price, quantity);
+    }
 }

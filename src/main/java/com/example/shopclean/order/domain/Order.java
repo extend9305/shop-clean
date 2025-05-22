@@ -13,7 +13,7 @@ public class Order {
     private OrderNo orderNo;
 
     @Getter
-    private long version;
+    private Long version;
 
     @Getter
     private Orderer orderer;
@@ -36,8 +36,9 @@ public class Order {
 
     protected Order() {}
 
-    private Order(OrderNo orderNo, Orderer orderer, ShippingInfo shippingInfo, OrderState state, List<OrderLine> orderLines) {
+    private Order(OrderNo orderNo,Long version ,Orderer orderer, ShippingInfo shippingInfo, OrderState state, List<OrderLine> orderLines) {
         this.orderNo = orderNo;
+        this.version = version;
         this.orderer = orderer;
         this.shippingInfo = shippingInfo;
         this.state = state;
@@ -45,11 +46,11 @@ public class Order {
         calculateTotalAmounts();
     }
 
-    public static Order withId(OrderNo orderNo, Orderer orderer, ShippingInfo shippingInfo, OrderState state,  List<OrderLine> orderLines) {
-        return new Order(orderNo,orderer,shippingInfo,state,orderLines);
+    public static Order withId(OrderNo orderNo,Long version, Orderer orderer, ShippingInfo shippingInfo, OrderState state,  List<OrderLine> orderLines) {
+        return new Order(orderNo,version,orderer,shippingInfo,state,orderLines);
     }
     public static Order withoutId(Orderer orderer, ShippingInfo shippingInfo, OrderState state,  List<OrderLine> orderLines) {
-        return new Order(OrderNo.nextOrderNo(),orderer,shippingInfo,state,orderLines);
+        return new Order(OrderNo.nextOrderNo(),null,orderer,shippingInfo,state,orderLines);
     }
 
     private void calculateTotalAmounts(){

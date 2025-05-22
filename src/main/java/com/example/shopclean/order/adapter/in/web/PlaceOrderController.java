@@ -21,6 +21,6 @@ public class PlaceOrderController {
                 placeOrderRequest.getShippingInfo()
         );
         OrderNo orderNo = placeOrderUseCase.placeOrder(command);
-        return orderNo.toString();
+        return orderNo.getNumber();
     }
 }

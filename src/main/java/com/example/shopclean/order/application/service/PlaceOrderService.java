@@ -34,25 +34,28 @@ public class PlaceOrderService implements PlaceOrderUseCase {
         //여기서 멤버 조회, 오더 조회 해서 생성 어답터 시도.
         //validation
 
-        //product find
+        //Todo 바운디드 컨텍스트별로 프로젝트가 쪼개 진다면 Product는 order pakage 에 있어야 한다. 그래서 추후 변경 예정
+
+        // 주문 상품 조회 및 주문 내역 생성
         List<OrderLine> orderLines = new ArrayList<>();
         placeOrderCommand.getOrderProducts().forEach(op -> {
             Product product = loadProductPort.loadProduct(new ProductId(op.getProductId()));
-            orderLines.add(new OrderLine(product.getId().getId(), new Money(product.getPrice().getValue()),op.getQuantity()));
+            orderLines.add(OrderLine.withId(product.getId().getId(), new Money(product.getPrice().getValue()),op.getQuantity()));
         });
 
+        // 주문자 정보 조회
         Member member = loadMemberPort.loadMember(placeOrderCommand.getOrdererMemberId());
 
         Order order = Order.withoutId(
-                new Orderer(member.getMemberId().getId(), member.getName()),
+                Orderer.of(member.getMemberId().getId(), member.getName()),
                 placeOrderCommand.getShippingInfo(),
                 OrderState.PAYMENT_WAITING,
                 orderLines
         );
-        //create order
+        // 주문 처리
         placeOrderPort.placeOrder(order);
 
-        return null;
+        return order.getOrderNo();
     }
 
 
