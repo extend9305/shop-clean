@@ -1,6 +1,7 @@
 package com.example.shopclean.order.domain;
 
 import com.example.shopclean.common.model.Money;
+import com.example.shopclean.order.domain.exception.AlreadyShippedException;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Getter;
@@ -53,8 +54,22 @@ public class Order {
         return new Order(OrderNo.nextOrderNo(),null,orderer,shippingInfo,state,orderLines);
     }
 
+    public void cancel(){
+        verifyNotYetShipped();
+        this.state = OrderState.CANCELED;
+    }
+
     private void calculateTotalAmounts(){
         this.totalAmounts = new Money(orderLines.stream()
                 .mapToInt(order -> order.getAmount().getValue()).sum());
+    }
+
+    public boolean isNotYetShipped() {
+        return state == OrderState.PAYMENT_WAITING || state == OrderState.PREPARING;
+    }
+
+    private void verifyNotYetShipped() {
+        if (!isNotYetShipped())
+            throw new AlreadyShippedException();
     }
 }
