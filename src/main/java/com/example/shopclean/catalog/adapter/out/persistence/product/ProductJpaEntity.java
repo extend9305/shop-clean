@@ -1,4 +1,4 @@
-package com.example.shopclean.product.adapter.out.persistence;
+package com.example.shopclean.catalog.adapter.out.persistence.product;
 
 import com.example.shopclean.common.jpa.MoneyConverter;
 import com.example.shopclean.common.model.Money;
