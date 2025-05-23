@@ -1,4 +1,4 @@
-package com.example.shopclean.product.domain;
+package com.example.shopclean.catalog.domain.product;
 
 import com.example.shopclean.common.model.Money;
 import lombok.AccessLevel;

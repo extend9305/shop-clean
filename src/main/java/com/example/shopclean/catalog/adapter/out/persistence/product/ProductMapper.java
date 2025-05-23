@@ -1,7 +1,7 @@
-package com.example.shopclean.product.adapter.out.persistence;
+package com.example.shopclean.catalog.adapter.out.persistence.product;
 
-import com.example.shopclean.product.domain.Product;
-import com.example.shopclean.product.domain.ProductId;
+import com.example.shopclean.catalog.domain.product.Product;
+import com.example.shopclean.catalog.domain.product.ProductId;
 import org.springframework.stereotype.Component;
 
 @Component
