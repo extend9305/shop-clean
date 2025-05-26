@@ -1,7 +1,9 @@
 package com.example.shopclean.order.domain;
 
+import com.example.shopclean.common.event.Events;
 import com.example.shopclean.common.model.Money;
 import com.example.shopclean.order.domain.exception.AlreadyShippedException;
+import com.example.shopclean.order.domain.exception.OrderAlreadyCanceledException;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Getter;
@@ -68,8 +70,29 @@ public class Order {
         return state == OrderState.PAYMENT_WAITING || state == OrderState.PREPARING;
     }
 
+    public boolean matchVersion(long version) {
+        return this.version == version;
+    }
+
+    public void startShipping(){
+        verifyShippableState();
+        this.state = OrderState.SHIPPED;
+    }
+
+    private void verifyShippableState() {
+        verifyNotYetShipped();
+        verifyNotCanceled();
+    }
+
     private void verifyNotYetShipped() {
         if (!isNotYetShipped())
             throw new AlreadyShippedException();
     }
+
+    private void verifyNotCanceled() {
+        if (state == OrderState.CANCELED) {
+            throw new OrderAlreadyCanceledException();
+        }
+    }
+
 }

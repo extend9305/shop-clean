@@ -5,14 +5,12 @@ import com.example.shopclean.order.adapter.out.persistence.OrderJpaEntity;
 import com.example.shopclean.order.adapter.out.persistence.OrderLineJpaEntity;
 import com.example.shopclean.order.adapter.out.persistence.OrderMapper;
 import com.example.shopclean.order.adapter.out.persistence.OrderRepository;
-import com.example.shopclean.product.domain.ProductId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SpringBootTest
 public class OrderRepositoryTest {
