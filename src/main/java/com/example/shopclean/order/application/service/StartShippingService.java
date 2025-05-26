@@ -21,7 +21,7 @@ public class StartShippingService implements StartShippingOrderUseCase {
     public void startShipping(StartShippingOrderCommand command) {
         Order order = loadOrderPort.loadOrderByOrderNo(command.getOrderNo());
 
-        if(order.matchVersion(command.getVersion())) {
+        if(!order.matchVersion(command.getVersion())) {
             throw new VersionConflictException();
         }
         order.startShipping();

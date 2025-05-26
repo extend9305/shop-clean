@@ -1,5 +1,6 @@
 package com.example.shopclean.order.domain;
 
+import com.example.shopclean.common.event.Events;
 import com.example.shopclean.common.model.Money;
 import com.example.shopclean.order.domain.exception.AlreadyShippedException;
 import com.example.shopclean.order.domain.exception.OrderAlreadyCanceledException;

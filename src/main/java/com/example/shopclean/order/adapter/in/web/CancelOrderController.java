@@ -6,6 +6,7 @@ import com.example.shopclean.order.domain.OrderNo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,8 +15,8 @@ public class CancelOrderController {
     private final CancelOrderUseCase cancelOrderUseCase;
 
     @PostMapping("/orders/{orderNo}/cancel")
-    public void cancel(@PathVariable("orderNo") String orderNo,String memberId) {
-        cancelOrderUseCase.cancelOrder(new CancelOrderCommand(new OrderNo(orderNo),memberId));
+    public void cancel(@PathVariable("orderNo") String orderNo, @RequestBody CancelOrderRequest request) {
+        cancelOrderUseCase.cancelOrder(new CancelOrderCommand(new OrderNo(orderNo),request.getMemberId(),request.getVersion()));
     }
 }
 
